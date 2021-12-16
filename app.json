@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "vouch-challenge",
+    "slug": "vouch-challenge",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "vouch-challenge"
+}
