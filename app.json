@@ -5,7 +5,12 @@
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "androidStatusBar": {
+      "backgroundColor": "#481380",
+      "translucent": false,
+      "barStyle":"light-content"
+    }
   },
   "name": "vouch-challenge"
 }

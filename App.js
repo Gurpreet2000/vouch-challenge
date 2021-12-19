@@ -1,21 +1,60 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import auth from '@react-native-firebase/auth';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import SignUpScreen from './src/screens/AuthScreens/SignUpScreen';
+import HomeScreen from './src/screens/HomeScreen';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+const MyTheme = {
+	...DefaultTheme,
+	colors: {
+		...DefaultTheme.colors,
+		primary: '#481380',
+		background: 'white',
+		card: 'white',
+		text: '#481380',
+	},
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const Stack = createStackNavigator();
+
+const App = () => {
+	const [initializing, setInitializing] = useState(true);
+	const [user, setUser] = useState();
+
+	const onAuthStateChanged = user => {
+		setUser(user);
+		if (initializing) setInitializing(false);
+	};
+
+	useEffect(() => {
+		const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+		return subscriber;
+	}, []);
+
+	return (
+		<NavigationContainer theme={MyTheme}>
+			<Stack.Navigator
+				screenOptions={{
+					cardStyle: { backgroundColor: 'white' },
+				}}
+			>
+				{user ? (
+					<Stack.Screen
+						name="Home"
+						component={HomeScreen}
+						options={{ headerShown: false }}
+					/>
+				) : (
+					<Stack.Screen
+						name="SignUp"
+						component={SignUpScreen}
+						options={{ title: 'Sign Up!' }}
+					/>
+				)}
+			</Stack.Navigator>
+		</NavigationContainer>
+	);
+};
+
+export default App;
